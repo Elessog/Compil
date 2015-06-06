@@ -1,0 +1,46 @@
+<head>
+<title>test_ebnf.ef</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: rgb(0,0,0); font-weight: normal; font-style: normal; }
+s0 { color: rgb(242, 16, 0); font-style: italic;}
+s1 { color: rgb(30, 120, 250); font-weight: bold;}
+s2 { color: rgb(125, 45, 253);font-weight: bold; }
+s3 { color: rgb(242, 0, 217); }
+s4 { color: rgb(98, 142, 255); }
+s5 { color: rgb(21, 202, 51); }
+s6 { color: rgb(10,10,255); font-weight: bold; font-size: 120%;font-variant: normal;}
+
+</style>
+</head>
+<BODY BGCOLOR="#FFFFFF">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#C0C0C0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+test_ebnf.ef</FONT>
+</center></TD></TR></TABLE>
+<pre><span>
+character<s3> =</s3>  <s1>(</s1> <s0>letter</s0><s1> )</s1><s2>
+          |</s2>  <s1>(</s1> <s0>digit</s0><s1> )</s1><s2>
+          |</s2>  <s1>(</s1> <s0>symbol</s0><s1> )</s1><s2>
+          | </s2> <s1>(</s1> <s5>"</s5><s5>_</s5><s5>"</s5><s1> )</s1><s4> ;
+</s4>alphaNum<s3> =</s3>  <s1>(</s1> <s0>letter</s0><s1> )</s1><s2>
+         |</s2>  <s1>(</s1> <s0>digit</s0><s1> )</s1><s2>
+         | </s2> <s1>(</s1> <s5>"</s5><s5>_</s5><s5>"</s5><s1> )</s1><s4> ;
+</s4>identifier<s3> =</s3>  <s0>letter</s0><s2> ,</s2> <s1>{</s1> alphaNum<s1> }</s1><s4> ;
+</s4>terminal<s3> =</s3>  <s1>(</s1>  <s5>"</s5><s5>'</s5><s5>"</s5><s2> ,</s2>  character<s2> ,</s2>  <s1>{</s1> character<s1> }</s1><s2> ,</s2> <s5>"</s5><s5>'</s5><s5>"</s5><s1> )</s1><s2>
+         | </s2> <s1>(</s1>  <s5>"</s5><s5>"</s5><s5>"</s5><s2> ,</s2>  character<s2> ,</s2>  <s1>{</s1> character<s1> }</s1><s2> ,</s2> <s5>"</s5><s5>"</s5><s5>"</s5><s1> )</s1><s4> ;
+</s4>lhs<s3> =</s3> identifier<s4> ;
+</s4>rhs<s3> =</s3>  <s1>(</s1> identifier<s1> )</s1><s2>
+    |</s2>  <s1>(</s1> terminal<s1> )</s1><s2>
+    |</s2>  <s1>(</s1>  <s5>"</s5><s5>[</s5><s5>"</s5><s2> ,</s2>  rhs<s2> ,</s2> <s5>"</s5><s5>]</s5><s5>"</s5><s1> )</s1><s2>
+    |</s2>  <s1>(</s1>  <s5>"</s5><s5>{</s5><s5>"</s5><s2> ,</s2>  rhs<s2> ,</s2> <s5>"</s5><s5>}</s5><s5>"</s5><s1> )</s1><s2>
+    |</s2>  <s1>(</s1>  <s5>"</s5><s5>(</s5><s5>"</s5><s2> ,</s2>  rhs<s2> ,</s2> <s5>"</s5><s5>)</s5><s5>"</s5><s1> )</s1><s2>
+    |</s2>  <s1>(</s1>  rhs<s2> ,</s2>  <s5>"</s5><s5>|</s5><s5>"</s5><s2> ,</s2> rhs<s1> )</s1><s2>
+    | </s2> <s1>(</s1>  rhs<s2> ,</s2>  <s5>"</s5><s5>,</s5><s5>"</s5><s2> ,</s2> rhs<s1> )</s1><s4> ;
+</s4>rule<s3> =</s3>  lhs<s2> ,</s2>  <s5>"</s5><s5>=</s5><s5>"</s5><s2> ,</s2>  rhs<s2> ,</s2> <s5>"</s5><s5>;</s5><s5>"</s5><s4> ;
+</s4><s6>grammar</s6><s3> =</s3> <s1>{</s1> rule<s1> }</s1><s4> ;
+</s4>
+</span></pre>
+</body>
+</html>

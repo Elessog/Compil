@@ -1,0 +1,8 @@
+def parsecharacterletterdigitsymbol_end
+def parsealphaNumletterdigit_end
+def parseidentifierletteralphaNumend
+def parseterminal'charactercharacter'"charactercharacter"end
+def parselhsidentifierend
+def parserhsidentifierterminal[rhs]{rhs}(rhs)rhs|rhsrhs,rhsend
+def parserulelhs=rhs;end
+def parsegrammarruleend
