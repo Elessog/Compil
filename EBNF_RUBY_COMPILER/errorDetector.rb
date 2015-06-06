@@ -59,13 +59,10 @@ class ErrorDetector
 
   def visitRule(rule,args=nil)
     say "visitRule"
-    rule.lhs.accept(self,nil)
     @dico.addIdentifier(rule.lhs.ident.to_s)
-    indent
-    #rule.rhs.accept(self,rule.lhs.ident.to_s)
-    desindent
   end
 
+=begin for futur implementation
   def visitLhs(lhs,args=nil)
     say "visitLhs"
     lhs.ident.accept(self,nil)
@@ -128,4 +125,6 @@ class ErrorDetector
 
     rhs.concRhs[1].accept(self,args)
   end
+=end
+
 end
