@@ -20,9 +20,7 @@ class Compiler
     raise "usage error : EBNF file needed !" if not filename
     puts "==> compiling #{filename}"
     @ast=@parser.parse(filename)
-    #pp @ast
-    #exit
-    #simpleVisit
+    
     rewriteVisit
     astwriteVisit
     codewriteVisit 

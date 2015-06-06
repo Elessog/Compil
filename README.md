@@ -32,7 +32,7 @@ This code is a little project made for a compilator course
 
   You shouldn't write anything more or make sure to return the value of the token. 
 
-  - There is no priority symbol between **|** and **,** so you should write groupement if needed
+  - There is no priority symbol between **"|"** and **","** so you should write groupement if needed
 
   - If you write a rule which call itself, there should be alternative statement and you should write each 
     statement in groupement
@@ -44,9 +44,13 @@ This code is a little project made for a compilator course
 
 		Expression = (Expression, "," , Expression )
 
+    or
+     
+		Statement = Statement
+
     as the output programme will end up in a infinite loop
    
-   If your Statement have the rule which call itself first (in the statement ) should be write at the end of the alternative statements
+   If your Statement have the rule  calling itself first (in the | statement ) It should be write at the end of the alternative statements
        example: 
 
 		Expression = (Identifier) | ( "(" , Expression , ")" ) | ( Expression , "," , Expression);
@@ -70,7 +74,7 @@ the beginning of the file:
 			| "'" | """ | "=" | "|" | "." | "," | ";" | "&" | "*" | "&&";
 
 
-Make sure the symbol you use are in the symbolDef line and in the hach TOKEN_DEF in the file parser_etudiant.rb especially if it use more than one character like && or <=.
+Make sure the symbol you use are in the symbolDef line and in the hach TOKEN_DEF in the file parser_etudiant.rb especially if it use more than one character like **&&** or **<=**.
 
 
 2°) Run the compiler

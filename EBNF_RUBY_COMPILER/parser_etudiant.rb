@@ -3,7 +3,7 @@ require_relative 'lexer'
 require_relative 'dictionnaire'
 require_relative 'ast'
 
-# A COMPLETER !
+
 TOKEN_DEF={
   :letter 	=> /letterDef/,
   :digitStr	=> /digitDef/,
@@ -48,12 +48,10 @@ class Parser
 
   attr_accessor :lexer 
   attr_accessor :dic
-  attr_accessor :countPass
 
   def initialize
     @lexer=Lexer.new(TOKEN_DEF)
     @dic = Dictionnaire.new()
-    @countPass=0
   end
 
   def parse filename
@@ -65,7 +63,7 @@ class Parser
   def expect token_kind
     next_tok=@lexer.get_next
     if next_tok.kind!=token_kind
-      #puts ""
+      # no puts as it would flood the console
       raise "expecting #{token_kind}. Got #{next_tok.kind} at #{next_tok.pos} \n\tparsing error"
     end
     return next_tok    
@@ -77,10 +75,6 @@ class Parser
 
   def acceptIt
     @lexer.get_next
-  end
-
-  def add_first token
-    @lexer.add_first(token)
   end
 
   def get_Stream
@@ -121,10 +115,9 @@ class Parser
     rule = Rule.new
     rule.lhs = parseLhs()
     expect :def
-    rule.rhs = parseRhs(1)
-    #sleep(2)
+    rule.rhs = parseRhs
     puts "============================="
-    @countPass=0
+    
     expect :term
     return rule
   end
@@ -135,7 +128,7 @@ class Parser
      return lhs
   end
 
-  def parseRhs rhsKind 
+  def parseRhs rhsKind=true
     puts "Parsing Rhs"
     rhs = Rhs.new
     tmpRhs = rhs.clone
@@ -145,99 +138,88 @@ class Parser
     begin
       rhs.ident=parseIdentifier()
 
-      if (showNext.kind==:altern || showNext.kind==:concat)&& rhsKind ==1#important semantiquemnt
+      if [:altern,:concat].include?(showNext.kind) && rhsKind 
         raise "continuing error"
       end
-      puts "Parsing I"
     rescue
       set_Stream(tmpStream)
       tmpStream = tmpStream.clone
     else
       return rhs
     end
+
     # Terminal
     rhs = Rhs.new
-    begin
+    if [:terminalstr1,:terminalstr2].include?(showNext.kind)
       rhs.terminal = parseTerminal()
-      if (showNext.kind==:altern || showNext.kind==:concat)&& rhsKind ==1
-        raise "continuing error"
+      if [:altern,:concat].include?(showNext.kind) && rhsKind 
+        set_Stream(tmpStream)
+        tmpStream = tmpStream.clone
+      else
+        return rhs
       end
-      puts "Parsing T"
-    rescue
-      set_Stream(tmpStream)
-      tmpStream = tmpStream.clone
-    else
-      return rhs
     end
+
     # [rhs]
     rhs = Rhs.new
-    begin
+    if showNext.kind==:loption
       expect :loption
-      puts "Parsing [Rhs]"
-      rhs.optRhs=parseRhs(1)
+      rhs.optRhs=parseRhs
       expect :roption
-      if (showNext.kind==:altern || showNext.kind==:concat)&& rhsKind ==1#important semantiquemnt
-        raise "continuing error"
+      if [:altern,:concat].include?(showNext.kind) && rhsKind 
+        set_Stream(tmpStream)
+        tmpStream = tmpStream.clone
+      else
+        return rhs
       end
-    rescue
-      set_Stream(tmpStream)
-      tmpStream = tmpStream.clone
-    else
-      return rhs
     end
+
     # {rhs}
     rhs = Rhs.new
-    begin
+    if showNext.kind==:lrepetition
       expect :lrepetition
-      puts "Parsing {Rhs}"
-      rhs.repRhs=parseRhs(1)
+      rhs.repRhs=parseRhs
       expect :rrepetition
-      if (showNext.kind==:altern || showNext.kind==:concat)&& rhsKind ==1#important semantiquemnt
-        raise "continuing error"
+      if [:altern,:concat].include?(showNext.kind) && rhsKind 
+        set_Stream(tmpStream)
+        tmpStream = tmpStream.clone
+      else
+        return rhs
       end
-    rescue
-      set_Stream(tmpStream)
-      tmpStream = tmpStream.clone
-    else
-      puts "end {}"
-      return rhs
     end
+
     # (rhs)
     rhs = Rhs.new
-    begin
+    if showNext.kind==:lgrouping
       expect :lgrouping
-      puts "Parsing (Rhs)"
-      rhs.groupRhs=parseRhs(1)
+      rhs.groupRhs=parseRhs
       expect :rgrouping
-      if (showNext.kind==:altern || showNext.kind==:concat)&& rhsKind ==1#important semantiquemnt
-        raise "continuing error"
+      if [:altern,:concat].include?(showNext.kind) && rhsKind 
+        set_Stream(tmpStream)
+        tmpStream = tmpStream.clone
+      else
+        return rhs
       end
-    rescue
-      set_Stream(tmpStream)
-      tmpStream = tmpStream.clone
-    else
-      return rhs
     end
+
     # rhs | rhs
     rhs = Rhs.new 
     begin
-      rhs.altRhs << parseRhs(0)
+      rhs.altRhs << parseRhs(false) 
       expect :altern
-      puts "Parsing |"
-      rhs.altRhs << parseRhs(1)
+      rhs.altRhs << parseRhs
     rescue
       set_Stream(tmpStream)
       tmpStream = tmpStream.clone
     else
-      puts "end alt" 
       return rhs
     end
+
     # rhs , rhs
     rhs = Rhs.new
-    rhs.concRhs << parseRhs(0)
+    rhs.concRhs << parseRhs(false)
     expect :concat
-    puts "Parsing ,"
-    rhs.concRhs << parseRhs(1)
+    rhs.concRhs << parseRhs
     return rhs
   end
 
@@ -341,9 +323,7 @@ class Parser
 
   def parseChar
     if !@dic.isLetter(showNext())
-        #@dic.printDicLetter
-	puts "expecting letter. Got #{showNext.kind} at #{showNext.pos} (#{showNext.value})"
-        raise "parsing error"
+        raise "parsing error expecting letter. Got #{showNext.kind} at #{showNext.pos} (#{showNext.value})"
     end
     letter = Letter.new
     letter.letter = acceptIt.value
@@ -352,8 +332,7 @@ class Parser
 
   def parseDig
     if !@dic.isDigit(showNext())
-	puts "expecting digit. Got #{showNext.kind} at #{showNext.pos} (#{showNext.value})"
-        raise "parsing error"
+        raise "parsing error expecting digit. Got #{showNext.kind} at #{showNext.pos} (#{showNext.value})"
     end
     digit = Digit.new
     digit.digit = acceptIt.value
@@ -362,8 +341,7 @@ class Parser
 
   def parseSym
     if !@dic.isSymbol(showNext())
-	puts "expecting symbol. Got #{showNext.kind} at #{showNext.pos} (#{showNext.value})"
-        raise "parsing error"
+        raise "parsing error expecting symbol. Got #{showNext.kind} at #{showNext.pos} (#{showNext.value})"
     end
     symbol = Symbol_.new
     symbol.symbol = acceptIt.value
