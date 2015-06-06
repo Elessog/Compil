@@ -1,0 +1,12 @@
+class Ast
+  def accept(visitor, arg=nil)
+    name = self.class.name.split(/::/)[0]
+    visitor.send("visit#{name}".to_sym, self ,arg)
+  end
+end
+
+#===========
+
+<%for i in astwriting.rules%>
+<%=i%>
+<%end%>

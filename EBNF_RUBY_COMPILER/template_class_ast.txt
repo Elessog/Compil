@@ -1,0 +1,8 @@
+class <%=ruleClass.ident.upcase%> < Ast
+    attr_accessor <%for i in ruleClass.nodes%><%a="\:"+i[1].downcase+","%><%a=a.chop if i==ruleClass.nodes.last%><%=a%><%end%>
+    def initialize <%for i in ruleClass.nodes%><%a=i[1].downcase+"\="%><%a << "nil," if !i[0].include?("r")%><%a << "\[\]," if i[0].include?("r")%><%a=a.chop if i==ruleClass.nodes.last%><%=a%><%end%>
+      <%for i in ruleClass.nodes%><%a="\@"+i[1].downcase+"="+i[1].downcase+""%><%a.chop if i==ruleClass.nodes.last%><%=a%>
+      <%end%>
+    end
+end
+

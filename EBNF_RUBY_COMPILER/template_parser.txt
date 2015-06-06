@@ -1,0 +1,85 @@
+require 'pp'
+require_relative 'lexer'
+require_relative 'output_astwriting'
+
+
+TOKEN_DEF={
+<%for i in codewriting.dico.dicTerminal%>  :token_<%=i.number.to_s%>	=> /<%for j in i.value.split("")%><%="" if /\w/.match(j)%><%="\\" if !/\w/.match(j)%><%=j%><%end%>/,
+<%end%>  
+
+# !!!! auto writting of the next kind of token, to be deleted or put in missing rule(s)
+  :identifier	=> /[a-zA-Z][a-zA-Z0-9_]*/,
+  :integer	=> /[0-9]+/#,
+  #:reste	=> /./
+}
+
+class Parser
+
+  attr_accessor :lexer
+
+  def initialize
+    @lexer=Lexer.new(TOKEN_DEF)
+  end
+
+  def parse filename
+    str=IO.read(filename)
+    @lexer.tokenize(str)
+    parseModule()
+  end
+
+  def expect token_kind
+    next_tok=@lexer.get_next
+    if next_tok.kind!=token_kind
+      @last_error = "expecting #{token_kind}. Got #{next_tok.kind} at #{next_tok.pos}"
+      raise "expecting #{token_kind}. Got #{next_tok.kind} at #{next_tok.pos} \n\tparsing error"
+    end
+    return next_tok    
+  end
+  
+  def showNext
+    @lexer.show_next
+  end
+
+  def acceptIt
+    @lexer.get_next
+  end
+
+  def add_first token #deprecated method
+    @lexer.add_first(token)
+  end
+
+  def get_Stream #deprecated method
+    @lexer.get_Stream
+  end
+  
+  def set_Stream newStream
+    @lexer.set_Stream(newStream)
+  end
+  
+  #======= First Call ================= Write fisrt rule to be applied, in method parseModule
+  
+  def parseModule
+    puts "start of parsing"
+    ast = parse<%=codewriting.uncalledRule%> #this is the last uncalled rule in the ast, first rule could be another
+    puts "end"
+    if get_Stream!=[] #printing of the last error if stream not finish due to use of begin and rescue we can not crash but still the file to be parse is not write correctly
+       puts @last_error
+       exit
+    end 
+    ast
+  end
+
+  #=======Specific to language=========
+
+<%=codewriting.text%>
+
+  <%="\#\=\=\=\=\=\= Missing Rules \=\=\=\=\=\=" if codewriting.missingRules!=[]%>
+
+<%for i in codewriting.missingRules%>  def parse<%=i%>
+    <%if /[iI][dD][eE][nN][tT][iI][fF][iI][eE][rR]/.match(i) %><%="\(expect \:identifier\)\.value"%><%elsif /[iI][nN][tT][eE][gG][eE][rR]/.match(i) || /[iI][nN][tT][eE][gG][eE][rR][lL][iI][tT]/.match(i) || /[iI][nN][tT][eE][gG][eE][rR][lL][iI][tT][eE][rR][aA][lL]/.match(i) %><%="\(expect \:integer\)\.value"%><%end%>
+  end
+
+<%end%>
+
+end
+

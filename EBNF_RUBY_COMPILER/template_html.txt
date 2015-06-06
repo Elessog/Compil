@@ -1,0 +1,26 @@
+<head>
+<title><%=htmlwriting.name%></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: rgb(0,0,0); font-weight: normal; font-style: normal; }
+s0 { color: rgb(242, 16, 0); font-style: italic;}
+s1 { color: rgb(30, 120, 250); font-weight: bold;}
+s2 { color: rgb(125, 45, 253);font-weight: bold; }
+s3 { color: rgb(242, 0, 217); }
+s4 { color: rgb(98, 142, 255); }
+s5 { color: rgb(21, 202, 51); }
+s6 { color: rgb(10,10,255); font-weight: bold; font-size: 120%;font-variant: normal;}
+
+</style>
+</head>
+<BODY BGCOLOR="#FFFFFF">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#C0C0C0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+<%=htmlwriting.name%></FONT>
+</center></TD></TR></TABLE>
+<pre><span>
+<%=htmlwriting.text%>
+</span></pre>
+</body>
+</html>
