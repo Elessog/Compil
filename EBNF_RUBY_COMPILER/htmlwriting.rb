@@ -109,7 +109,7 @@ class HtmlWriting
     end
   end
 
-  def writeLRhsPart(obj) #write left part of {} [] ()
+  def writeLRhsPart(obj) #write left part of {} [] ()
     if obj.groupRhs!=nil
       addTxt writeS(1,"\(")
     elsif obj.optRhs!=nil
@@ -119,7 +119,7 @@ class HtmlWriting
     end
   end
 
-  def writeRRhsPart(obj) #write right part of {} [] ()
+  def writeRRhsPart(obj) #write right part of {} [] ()
     if obj.groupRhs!=nil
       addTxt writeS(1," \)")
     elsif obj.optRhs!=nil
