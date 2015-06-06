@@ -59,7 +59,7 @@ class HtmlWriting
 
   def visitRule(rule,args=nil)
     tmp,name= rule.rhs.returnObjNam
-    args = rule.lhs.ident.to_s.length if name="altRh"
+    args = rule.lhs.ident.to_s.length
     rule.lhs.accept(self,nil)
     rule.rhs.accept(self,args)
     addTxt writeS(4," \;\n")
@@ -91,16 +91,16 @@ class HtmlWriting
     nn=args
     args = nil if val
     decl.accept(self,args) 
-    writeDRhsPart(rhs,nn) if val 
+    writeDRhsPart(rhs,nn) if val #check if first part of altern or concat 
     val=false
   end
 
-  def writeDRhsPart(obj,args)
+  def writeDRhsPart(obj,args) #write | or ,
     if obj.altRhs!=[] && args!=nil
      if obj.altRhs[1].altRhs!=[]
        addTxt writeS(2,"\n"+" "*(args+1)+"\|")
      else
-       addTxt writeS(2,"\n"+" "*(args+1)+"\| ")
+       addTxt writeS(2,"\n"+" "*(args+1)+"\| ")# add space for design purpose
      end
     elsif obj.altRhs!=[]
       addTxt writeS(2,"\|")
@@ -109,7 +109,7 @@ class HtmlWriting
     end
   end
 
-  def writeLRhsPart(obj)
+  def writeLRhsPart(obj) #write left part of {} [] ()
     if obj.groupRhs!=nil
       addTxt writeS(1,"\(")
     elsif obj.optRhs!=nil
@@ -119,7 +119,7 @@ class HtmlWriting
     end
   end
 
-  def writeRRhsPart(obj)
+  def writeRRhsPart(obj) #write right part of {} [] ()
     if obj.groupRhs!=nil
       addTxt writeS(1," \)")
     elsif obj.optRhs!=nil
@@ -136,7 +136,7 @@ class HtmlWriting
   end
 
   def visitIdentifier(identifier,args=nil)
-    if @error.include?(identifier.to_s)
+    if @error.include?(identifier.to_s) 
       addTxt writeS(0,identifier.to_s)
     elsif @uncalled.include?(identifier.to_s)
       addTxt writeS(6,identifier.to_s)
