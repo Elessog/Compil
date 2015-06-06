@@ -19,6 +19,7 @@ This code is a little project made for a compilator course
 **How to make a rule**
 
   example:
+
 		IfStatement = ("if",{Statement},["else",{Statement}],"end");  
 
   If you call a rule (here Statement) you should make sure it exist, unless the call is about
@@ -36,14 +37,20 @@ This code is a little project made for a compilator course
   - If you write a rule which call itself, there should be alternative statement and you should write each 
     statement in groupement
       example :
+
 		Expression = (Identifier) |( Expression , "," , Expression);
+
     You must not write a rule such as :
+
 		Expression = (Expression, "," , Expression )
+
     as the output programme will end up in a infinite loop
    
    If your Statement have the rule which call itself first (in the statement ) should be write at the end of the alternative statements
        example: 
+
 		Expression = (Identifier) | ( "(" , Expression , ")" ) | ( Expression , "," , Expression);
+
 
 
 **Complete the EBNF file**
@@ -72,6 +79,7 @@ Make sure the symbol you use are in the symbolDef line and in the hach TOKEN_DEF
 On the termimal write 'ruby compiler.rb filename'
 
 The output files will be on the folder 'output':
+
                 - output_codewriting.rb : the parser
                 - output_astwriting.rb : the ast class
                 - output_html.html : the ebnf rewritten with colour
