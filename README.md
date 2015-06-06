@@ -1,10 +1,8 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%% READ ME  COMPILATEUR EBNF %%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+READ ME  COMPILATEUR EBNF
+=========================
 
 1°) Write an EBNF file
-  
+======================
 
   - identifier
   - "terminal"
@@ -15,8 +13,8 @@
   - | alternative
   - ; end of rule
 
-  How to make a rule
-    IfStatement = ("if",{Statement},["else",{Statement}],"end");  : this is an example
+**How to make a rule**
+  IfStatement = ("if",{Statement},["else",{Statement}],"end");  : this is an example
 
   If you call a rule (here Statement) you should make sure it exist, unless the call is about
   identifier and number
@@ -32,34 +30,34 @@
 
   - If you write a rule which call itself, there should be alternative statement and you should write each 
     statement in groupement
-         example : 
-                  Expression = (Identifier) |( Expression , "," , Expression);
+      example :
+		Expression = (Identifier) |( Expression , "," , Expression);
     You must not write a thing as Expression = (Expression, "," , Expression ) as it the programme wil end up in a infinite loop
     If your Statement have the rule which call itself first (in the statement ) should be write at the end of the alternative statements
        example:  Expression = (Identifier) | ( "(" , Expression , ")" ) | ( Expression , "," , Expression);
 
 
- As the compiler is not completly finish before running you should copy paste the next line (without the %%% ) in
+**Complete the EBNF file**
+As the compiler is not completly finish before running you should copy paste the next line (without the %%% ) in
 the beginning of the file:
 
+		letterDef = "A" | "B" | "C" | "D" | "E" | "F" | "G"
+			| "H" | "I" | "J" | "K" | "L" | "M" | "N"
+			| "O" | "P" | "Q" | "R" | "S" | "T" | "U"
+			| "V" | "W" | "X" | "Y" | "Z" | "a" | "b" | "c" | "d" | "e" | "f" | "g"
+			| "h" | "i" | "j" | "k" | "l" | "m" | "n"
+			| "o" | "p" | "q" | "r" | "s" | "t" | "u"
+			| "v" | "w" | "x" | "y" | "z" ;
+		digitDef = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+		symbolDef = "[" | "]" | "{" | "}" | "(" | ")" | "<" | ">"
+			| "'" | """ | "=" | "|" | "." | "," | ";" | "&" | "*" | "&&";
 
-%%%%%%%%%%%%%%%%%%
-letterDef = "A" | "B" | "C" | "D" | "E" | "F" | "G"
-       | "H" | "I" | "J" | "K" | "L" | "M" | "N"
-       | "O" | "P" | "Q" | "R" | "S" | "T" | "U"
-       | "V" | "W" | "X" | "Y" | "Z" | "a" | "b" | "c" | "d" | "e" | "f" | "g"
-       | "h" | "i" | "j" | "k" | "l" | "m" | "n"
-       | "o" | "p" | "q" | "r" | "s" | "t" | "u"
-       | "v" | "w" | "x" | "y" | "z" ;
-digitDef = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
-symbolDef = "[" | "]" | "{" | "}" | "(" | ")" | "<" | ">"
-       | "'" | """ | "=" | "|" | "." | "," | ";" | "&" | "*" | "&&";
-%%%%%%%%%%%%%%%%%%%
 
 Make sure the symbol you use are in the symbolDef line and in the hach TOKEN_DEF in the file parser_etudiant.rb especially if it use more than one character like && or <=.
 
 
 2°) Run the compiler
+====================
       On the termimal write 'ruby compiler.rb filename'
 
      The output files will be on the folder 'output':
@@ -69,7 +67,7 @@ Make sure the symbol you use are in the symbolDef line and in the hach TOKEN_DEF
                 - output_rewrite.txt : the ebnf rewritten
 
 
-!!!!!!!!!!!!!!!!!!!!!!! Warning !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+**!!!!!!!!!!!!!!!!!!!!! Warning !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!**
 erreur d'optimisation sur les options et repetitions
 dans le fonctions ecritOptRhs et ecritRepRhs sur les if où l'ont ecrit mettre les conditions des deux premiers statement a if
 pour forcer l'ecriture du begin rescue
