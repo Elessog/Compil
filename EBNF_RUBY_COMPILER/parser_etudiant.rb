@@ -5,11 +5,6 @@ require_relative 'ast'
 
 
 TOKEN_DEF={
-  :letter 	=> /letterDef/,
-  :digitStr	=> /digitDef/,
-  :symbol	=> /symbolDef/,
-  :reg		=> /reg/,
-  :kw		=> /kw/,
   :egeg		=> /\=\=/,
   :def 		=> /\=/,
   :concat	=> /\,/,
@@ -88,15 +83,6 @@ class Parser
   #=========== parse method relative to the grammar ========
   def parseModule
     puts "parseModule"
-    expect :letter
-    parseLetter()
-    puts "ending parsing letter"
-    expect :digitStr
-    parseDigit()
-    puts "ending parsing digit"
-    expect :symbol
-    parseSymbol()
-    puts "ending parsing Symbol"   
     modul = Modul.new
     modul.grammar=parseGrammar()
     puts "ending parsing files"
@@ -315,56 +301,4 @@ class Parser
     end
     return symbol
   end
-  #=============parse Dictionnary =================
-  def parseTMPCHAR
-    expect :terminalstr2
-    @dic.addLetter(showNext())
-    acceptIt
-    expect :terminalstr2
-  end
-
-  def parseTMPDIG
-    expect :terminalstr2
-    @dic.addDigit(showNext())
-    acceptIt
-    expect :terminalstr2
-  end
-
-  def parseTMPSYM #TODO work only with unique token 
-    expect :terminalstr2
-    @dic.addSymbol(showNext)
-    acceptIt
-    expect :terminalstr2
-  end 
-
-  def parseLetter
-    expect :def
-    parseTMPCHAR()
-    while showNext.kind == :altern
-    	expect :altern
-        parseTMPCHAR()
-    end
-    expect :term
-  end
-
-  def parseDigit
-    expect :def
-    parseTMPDIG()
-    while showNext.kind == :altern
-    	expect :altern
-        parseTMPDIG()
-    end
-    expect :term
-  end 
-
-  def parseSymbol
-    expect :def
-    parseTMPSYM()
-    while showNext.kind == :altern
-    	expect :altern
-        parseTMPSYM()
-    end
-    expect :term
-  end
- #==================================================
 end

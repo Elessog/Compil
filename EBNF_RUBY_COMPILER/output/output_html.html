@@ -1,5 +1,5 @@
 <head>
-<title>test_ebnf.ef</title>
+<title>test_mini_java_ebnf.ef</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <style type="text/css">
 .ln { color: rgb(0,0,0); font-weight: normal; font-style: normal; }
@@ -17,29 +17,37 @@ s6 { color: rgb(10,10,255); font-weight: bold; font-size: 120%;font-variant: nor
 <TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#C0C0C0" >
 <TR><TD><CENTER>
 <FONT FACE="Arial, Helvetica" COLOR="#000000">
-test_ebnf.ef</FONT>
+test_mini_java_ebnf.ef</FONT>
 </center></TD></TR></TABLE>
 <pre><span>
-character<s3> =</s3>  <s1>(</s1> <s0>letter</s0><s1> )</s1><s2>
-          |</s2>  <s1>(</s1> <s0>digit</s0><s1> )</s1><s2>
-          |</s2>  <s1>(</s1> <s0>symbol</s0><s1> )</s1><s2>
-          | </s2> <s1>(</s1> <s5>"</s5><s5>_</s5><s5>"</s5><s1> )</s1><s4> ;
-</s4>alphaNum<s3> =</s3>  <s1>(</s1> <s0>letter</s0><s1> )</s1><s2>
-         |</s2>  <s1>(</s1> <s0>digit</s0><s1> )</s1><s2>
-         | </s2> <s1>(</s1> <s5>"</s5><s5>_</s5><s5>"</s5><s1> )</s1><s4> ;
-</s4>identifier<s3> =</s3>  <s0>letter</s0><s2> ,</s2> <s1>{</s1> alphaNum<s1> }</s1><s4> ;
-</s4>terminal<s3> =</s3>  <s1>(</s1>  <s5>"</s5><s5>'</s5><s5>"</s5><s2> ,</s2>  character<s2> ,</s2>  <s1>{</s1> character<s1> }</s1><s2> ,</s2> <s5>"</s5><s5>'</s5><s5>"</s5><s1> )</s1><s2>
-         | </s2> <s1>(</s1>  <s5>"</s5><s5>"</s5><s5>"</s5><s2> ,</s2>  character<s2> ,</s2>  <s1>{</s1> character<s1> }</s1><s2> ,</s2> <s5>"</s5><s5>"</s5><s5>"</s5><s1> )</s1><s4> ;
-</s4>lhs<s3> =</s3> identifier<s4> ;
-</s4>rhs<s3> =</s3>  <s1>(</s1> identifier<s1> )</s1><s2>
-    |</s2>  <s1>(</s1> terminal<s1> )</s1><s2>
-    |</s2>  <s1>(</s1>  <s5>"</s5><s5>[</s5><s5>"</s5><s2> ,</s2>  rhs<s2> ,</s2> <s5>"</s5><s5>]</s5><s5>"</s5><s1> )</s1><s2>
-    |</s2>  <s1>(</s1>  <s5>"</s5><s5>{</s5><s5>"</s5><s2> ,</s2>  rhs<s2> ,</s2> <s5>"</s5><s5>}</s5><s5>"</s5><s1> )</s1><s2>
-    |</s2>  <s1>(</s1>  <s5>"</s5><s5>(</s5><s5>"</s5><s2> ,</s2>  rhs<s2> ,</s2> <s5>"</s5><s5>)</s5><s5>"</s5><s1> )</s1><s2>
-    |</s2>  <s1>(</s1>  rhs<s2> ,</s2>  <s5>"</s5><s5>|</s5><s5>"</s5><s2> ,</s2> rhs<s1> )</s1><s2>
-    | </s2> <s1>(</s1>  rhs<s2> ,</s2>  <s5>"</s5><s5>,</s5><s5>"</s5><s2> ,</s2> rhs<s1> )</s1><s4> ;
-</s4>rule<s3> =</s3>  lhs<s2> ,</s2>  <s5>"</s5><s5>=</s5><s5>"</s5><s2> ,</s2>  rhs<s2> ,</s2> <s5>"</s5><s5>;</s5><s5>"</s5><s4> ;
-</s4><s6>grammar</s6><s3> =</s3> <s1>{</s1> rule<s1> }</s1><s4> ;
+<s6>Goal</s6><s3> =</s3>  MainClass<s2> ,</s2>  <s1>{</s1> ClassDeclaration<s1> }</s1><s2> ,</s2> <s0>EOF</s0><s4> ;
+</s4>MainClass<s3> =</s3>  <s5>"</s5><s5>class</s5><s5>"</s5><s2> ,</s2>  <s0>Identifier</s0><s2> ,</s2>  <s5>"</s5><s5>{</s5><s5>"</s5><s2> ,</s2>  <s5>"</s5><s5>public</s5><s5>"</s5><s2> ,</s2>  <s5>"</s5><s5>static</s5><s5>"</s5><s2> ,</s2>  <s5>"</s5><s5>void</s5><s5>"</s5><s2> ,</s2>  <s5>"</s5><s5>main</s5><s5>"</s5><s2> ,</s2>  <s5>"</s5><s5>(</s5><s5>"</s5><s2> ,</s2>  <s5>"</s5><s5>String</s5><s5>"</s5><s2> ,</s2>  <s5>"</s5><s5>[</s5><s5>"</s5><s2> ,</s2>  <s5>"</s5><s5>]</s5><s5>"</s5><s2> ,</s2>  <s0>Identifier</s0><s2> ,</s2>  <s5>"</s5><s5>)</s5><s5>"</s5><s2> ,</s2>  <s5>"</s5><s5>{</s5><s5>"</s5><s2> ,</s2>  Statement<s2> ,</s2>  <s5>"</s5><s5>}</s5><s5>"</s5><s2> ,</s2> <s5>"</s5><s5>}</s5><s5>"</s5><s4> ;
+</s4>ClassDeclaration<s3> =</s3>  <s5>"</s5><s5>class</s5><s5>"</s5><s2> ,</s2>  <s0>Identifier</s0><s2> ,</s2>  <s1>[</s1>  <s5>"</s5><s5>extends</s5><s5>"</s5><s2> ,</s2> <s0>Identifier</s0><s1> ]</s1><s2> ,</s2>  <s5>"</s5><s5>{</s5><s5>"</s5><s2> ,</s2>  <s1>{</s1> VarDeclaration<s1> }</s1><s2> ,</s2>  <s1>{</s1> MethodDeclaration<s1> }</s1><s2> ,</s2> <s5>"</s5><s5>}</s5><s5>"</s5><s4> ;
+</s4>VarDeclaration<s3> =</s3>  Type<s2> ,</s2>  <s0>Identifier</s0><s2> ,</s2> <s5>"</s5><s5>;</s5><s5>"</s5><s4> ;
+</s4>MethodDeclaration<s3> =</s3>  <s5>"</s5><s5>public</s5><s5>"</s5><s2> ,</s2>  Type<s2> ,</s2>  <s0>Identifier</s0><s2> ,</s2>  <s5>"</s5><s5>(</s5><s5>"</s5><s2> ,</s2>  <s1>[</s1>  Type<s2> ,</s2>  <s0>Identifier</s0><s2> ,</s2> <s1>{</s1>  <s5>"</s5><s5>,</s5><s5>"</s5><s2> ,</s2>  Type<s2> ,</s2> <s0>Identifier</s0><s1> }</s1><s1> ]</s1><s2> ,</s2>  <s5>"</s5><s5>)</s5><s5>"</s5><s2> ,</s2>  <s5>"</s5><s5>{</s5><s5>"</s5><s2> ,</s2>  <s1>{</s1> VarDeclaration<s1> }</s1><s2> ,</s2>  <s1>{</s1> Statement<s1> }</s1><s2> ,</s2>  <s5>"</s5><s5>return</s5><s5>"</s5><s2> ,</s2>  Expression<s2> ,</s2>  <s5>"</s5><s5>;</s5><s5>"</s5><s2> ,</s2> <s5>"</s5><s5>}</s5><s5>"</s5><s4> ;
+</s4>Type<s3> =</s3>  <s1>(</s1>  <s5>"</s5><s5>int</s5><s5>"</s5><s2> ,</s2>  <s5>"</s5><s5>[</s5><s5>"</s5><s2> ,</s2> <s5>"</s5><s5>]</s5><s5>"</s5><s1> )</s1><s2>
+     |</s2>  <s1>(</s1> <s5>"</s5><s5>boolean</s5><s5>"</s5><s1> )</s1><s2>
+     |</s2>  <s1>(</s1> <s5>"</s5><s5>int</s5><s5>"</s5><s1> )</s1><s2>
+     | </s2> <s1>(</s1> <s0>Identifier</s0><s1> )</s1><s4> ;
+</s4>Statement<s3> =</s3>  <s1>(</s1>  <s5>"</s5><s5>{</s5><s5>"</s5><s2> ,</s2>  <s1>{</s1> Statement<s1> }</s1><s2> ,</s2> <s5>"</s5><s5>}</s5><s5>"</s5><s1> )</s1><s2>
+          |</s2>  <s1>(</s1>  <s5>"</s5><s5>if</s5><s5>"</s5><s2> ,</s2>  <s5>"</s5><s5>(</s5><s5>"</s5><s2> ,</s2>  Expression<s2> ,</s2>  <s5>"</s5><s5>)</s5><s5>"</s5><s2> ,</s2>  Statement<s2> ,</s2>  <s5>"</s5><s5>else</s5><s5>"</s5><s2> ,</s2> Statement<s1> )</s1><s2>
+          |</s2>  <s1>(</s1>  <s5>"</s5><s5>while</s5><s5>"</s5><s2> ,</s2>  <s5>"</s5><s5>(</s5><s5>"</s5><s2> ,</s2>  Expression<s2> ,</s2>  <s5>"</s5><s5>)</s5><s5>"</s5><s2> ,</s2> Statement<s1> )</s1><s2>
+          |</s2>  <s1>(</s1>  <s5>"</s5><s5>System.out.println</s5><s5>"</s5><s2> ,</s2>  <s5>"</s5><s5>(</s5><s5>"</s5><s2> ,</s2>  Expression<s2> ,</s2>  <s5>"</s5><s5>)</s5><s5>"</s5><s2> ,</s2> <s5>"</s5><s5>;</s5><s5>"</s5><s1> )</s1><s2>
+          |</s2>  <s1>(</s1>  <s0>Identifier</s0><s2> ,</s2>  <s5>"</s5><s5>=</s5><s5>"</s5><s2> ,</s2>  Expression<s2> ,</s2> <s5>"</s5><s5>;</s5><s5>"</s5><s1> )</s1><s2>
+          | </s2> <s1>(</s1>  <s0>Identifier</s0><s2> ,</s2>  <s5>"</s5><s5>[</s5><s5>"</s5><s2> ,</s2>  Expression<s2> ,</s2>  <s5>"</s5><s5>]</s5><s5>"</s5><s2> ,</s2>  <s5>"</s5><s5>=</s5><s5>"</s5><s2> ,</s2>  Expression<s2> ,</s2> <s5>"</s5><s5>;</s5><s5>"</s5><s1> )</s1><s4> ;
+</s4>Expression<s3> =</s3>  <s1>(</s1> <s0>IntegerLiteral</s0><s1> )</s1><s2>
+           |</s2>  <s1>(</s1> <s5>"</s5><s5>true</s5><s5>"</s5><s1> )</s1><s2>
+           |</s2>  <s1>(</s1> <s5>"</s5><s5>false</s5><s5>"</s5><s1> )</s1><s2>
+           |</s2>  <s1>(</s1> <s0>Identifier</s0><s1> )</s1><s2>
+           |</s2>  <s1>(</s1> <s5>"</s5><s5>this</s5><s5>"</s5><s1> )</s1><s2>
+           |</s2>  <s1>(</s1>  <s5>"</s5><s5>new</s5><s5>"</s5><s2> ,</s2>  <s5>"</s5><s5>int</s5><s5>"</s5><s2> ,</s2>  <s5>"</s5><s5>[</s5><s5>"</s5><s2> ,</s2>  Expression<s2> ,</s2> <s5>"</s5><s5>]</s5><s5>"</s5><s1> )</s1><s2>
+           |</s2>  <s1>(</s1>  <s5>"</s5><s5>new</s5><s5>"</s5><s2> ,</s2>  <s0>Identifier</s0><s2> ,</s2>  <s5>"</s5><s5>(</s5><s5>"</s5><s2> ,</s2> <s5>"</s5><s5>)</s5><s5>"</s5><s1> )</s1><s2>
+           |</s2>  <s1>(</s1>  <s5>"</s5><s5>!</s5><s5>"</s5><s2> ,</s2> Expression<s1> )</s1><s2>
+           |</s2>  <s1>(</s1>  <s5>"</s5><s5>(</s5><s5>"</s5><s2> ,</s2>  Expression<s2> ,</s2> <s5>"</s5><s5>)</s5><s5>"</s5><s1> )</s1><s2>
+           |</s2>  <s1>(</s1>  Expression<s2> ,</s2>  <s5>"</s5><s5>[</s5><s5>"</s5><s2> ,</s2>  Expression<s2> ,</s2> <s5>"</s5><s5>]</s5><s5>"</s5><s1> )</s1><s2>
+           |</s2>  <s1>(</s1>  Expression<s2> ,</s2>  <s5>"</s5><s5>.</s5><s5>"</s5><s2> ,</s2> <s5>"</s5><s5>length</s5><s5>"</s5><s1> )</s1><s2>
+           |</s2>  <s1>(</s1>  Expression<s2> ,</s2>  <s5>"</s5><s5>.</s5><s5>"</s5><s2> ,</s2>  <s0>Identifier</s0><s2> ,</s2>  <s5>"</s5><s5>(</s5><s5>"</s5><s2> ,</s2>  <s1>[</s1>  Expression<s2> ,</s2> <s1>{</s1>  <s5>"</s5><s5>,</s5><s5>"</s5><s2> ,</s2> Expression<s1> }</s1><s1> ]</s1><s2> ,</s2> <s5>"</s5><s5>)</s5><s5>"</s5><s1> )</s1><s2>
+           | </s2> <s1>(</s1>  Expression<s2> ,</s2>  <s1>(</s1>  <s5>"</s5><s5>&&</s5><s5>"</s5><s2>|</s2>  <s5>"</s5><s5><</s5><s5>"</s5><s2>|</s2>  <s5>"</s5><s5>+</s5><s5>"</s5><s2>|</s2>  <s5>"</s5><s5>-</s5><s5>"</s5><s2>|</s2> <s5>"</s5><s5>*</s5><s5>"</s5><s1> )</s1><s2> ,</s2> Expression<s1> )</s1><s4> ;
 </s4>
 </span></pre>
 </body>
