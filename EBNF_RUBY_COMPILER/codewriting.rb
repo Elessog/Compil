@@ -122,16 +122,18 @@ class CodeWriting
     args = NameRule.new([rule.lhs.ident.to_s],false,args) #allow to now the name of the rule while in the tree and the tree itself
     args.bool = true if @loopIdent.include?(rule.lhs.ident.to_s)
     #================ LOOP avoidance (in output parser) ==================
+    #here we check if the rule call itself in  way that will cause infinite loop (in reasonnable way we considere that the writer wrote a non degenerate ebnf and wrote it as our specifiation - see README -) 
     args1 = args.clone
     if args1.bool
       rhs = rule.rhs
-      rhs3,name3 =rhs.returnObjNam
+      rhs3,name3 =rhs.returnObjNam 
+      #we suppose if the rule call itself the rule is more or less Rule = (Statement) | (...) | (Rule);  
       lisTerm=[]
       boolAlt =false
-      while name3=="altRhs"#visit of altRhs
+      while name3=="altRhs"#visit of altRhs statement: Rule = Statement | Statement | Statement ; 
         boolAlt=true
         rshTmp,nameTmp = rhs3[0].groupRhs.returnObjNam
-        if nameTmp=="concRhs"
+        if nameTmp=="concRhs" 
           rshTmp,nameTmp = rhs3[0].groupRhs.returnObj[0].returnObjNam
           rshTmp2 = rhs3[0].groupRhs.returnObj[1].concRhs[0]
           if nameTmp=="ident"
@@ -140,7 +142,7 @@ class CodeWriting
               tt,name4 = rshTmp2.returnObjNam
               bool=false
               bool,dico = rshTmp2.groupRhs.isOnlyTerminal([],args1) if name4=="groupRhs"
-              if bool
+              if bool #we suppose after the call to itself and if the call is made first then there is a terminal
                 bool,dico = rshTmp2.groupRhs.isOnlyTerminal([],args1)
                 dico.each{|term1| lisTerm << term1 if !lisTerm.include?(term1)}
               else
@@ -279,6 +281,7 @@ class CodeWriting
     if !rhs.isThereAlt #to be improve 
       term = rhs.returnTerminal(args)
       bool2,dico = rhs.isOnlyTerminal([],args)
+      term = nil if !bool2
       bool = true if (term!=term2)
     end
     
@@ -337,20 +340,10 @@ class CodeWriting
     if !rhs.isThereAlt
       term = rhs.returnTerminal(args)
       bool2, dico = rhs.isOnlyTerminal([],args)
-      if args.name.first == "MethodDeclaration"
-       pp term
-       pp bool2
-       puts "##################"
-      end
       term = nil if !bool2
       bool = true if ( term!=term2) 
     end
-    if false#args.name.first == "MethodDeclaration"
-      pp term
-      pp term2
-      pp bool
-      pp rhs
-    end
+
     #==== AST ====
     args=args.clone
     args.placement=args.placement.clone

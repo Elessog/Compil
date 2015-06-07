@@ -110,7 +110,7 @@ class Rhs  < Ast #this classe get more method for a better writing of the parser
     elsif name =="terminal"
       return nextObj
     elsif !nextObj.kind_of?(Array)
-      return nil if name=="optRhs" && n!=0 
+      return nil if (name=="optRhs" || name=="repRhs") && n!=0 
       return nextObj.returnTerminal(nameRule,1)
     else
       return nextObj[0].returnTerminal(nameRule,1)
