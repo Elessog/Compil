@@ -28,13 +28,13 @@ class ErrorDetector
   end
   
   def detectMissingRule
-    identToCheck = @dicoFull.dicIdentifier
+    identToCheck = @dicoFull.dicIdentifier.keys
     identToCheck.each{|decl| checkPresence(decl)}
   end
 
   def checkPresence decl
-    puts "Warnings: #{decl.value} got no rule" if !@dico.isIdentifier(decl.value)
-    @missing << decl.value if !@dico.isIdentifier(decl.value)
+    puts "Warnings: #{decl} got no rule" if !@dico.isIdentifier(decl)
+    @missing << decl if !@dico.isIdentifier(decl)
   end
 
   def say txt

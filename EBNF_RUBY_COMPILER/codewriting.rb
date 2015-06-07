@@ -51,7 +51,7 @@ class CodeWriting
     errorDetector = ErrorDetector.new(false,@dico)
     errorDetector.doIt ast
     @missingRules=errorDetector.missing
-    @uncalledRule = @dico.uncalledIdent(errorDetector.dico.dicIdentifier)
+    @uncalledRule = @dico.uncalledIdent(errorDetector.dico.dicIdentifier.keys)
     puts "Warning No primary rule for Parser" if @uncalledRule==""
 
   #====== Writing File ======

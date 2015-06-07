@@ -2,9 +2,9 @@ require 'pp'
 require_relative 'lexer'
 require_relative 'output_astwriting'
 
-
+<%hach=codewriting.dico.dicTerminal%>
 TOKEN_DEF={
-<%for i in codewriting.dico.dicTerminal%>  :token_<%=i.number.to_s%>	=> /<%for j in i.value.split("")%><%="" if /\w/.match(j)%><%="\\" if !/\w/.match(j)%><%=j%><%end%>/,
+<%for i in hach.keys%>  :token_<%=hach[i].to_s%>	=> /<%for j in i.split("")%><%="" if /\w/.match(j)%><%="\\" if !/\w/.match(j)%><%=j%><%end%>/,
 <%end%>  
 
 # !!!! auto writting of the next kind of token, to be deleted or put in missing rule(s)
