@@ -251,82 +251,52 @@ class Parser
   def parseIdentifier
     puts "Parsing ident"
     ident = Identifier.new
-    ident.letter = parseChar()
+    ident.letter = parseLet
     continue = true
-    while (continue)
-      tmpStream=@lexer.stream.clone
-      tmpIdent = ident.clone
-      begin
+    while [:letterLit,:integer,:under].include?(showNext.kind)
         ident.alphaNum << parseAlphaNum()
-      rescue
-        continue=false
-        set_Stream(tmpStream)
-        ident = tmpIdent
-      end
     end 
     return ident
   end
 
   def parseAlphaNum
-    tmpStream = @lexer.stream.clone
     alphaNum = AlphaNum.new
-    begin
-      alphaNum.letter = parseChar()
-    rescue
-      set_Stream(tmpStream)
-      tmpStream = tmpStream.clone
-    else
+    if showNext.kind == :letterLit
+      alphaNum.letter = parseLet
       return alphaNum
     end
-    alphaNum = AlphaNum.new
-    begin
-      alphaNum.digit = parseDig()
-    rescue
-      set_Stream(tmpStream)
-      tmpStream = tmpStream.clone
-    else
+
+    
+    if showNext.kind == :integer
+      alphaNum.digit = parseDig
       return alphaNum
     end
-    alphaNum = AlphaNum.new
+
     alphaNum.under = (expect :under).value
     return alphaNum
   end
 
   def parseCharacter 
-    tmpStream = @lexer.stream.clone
     character = Character.new
-    begin
-      character.letter = parseChar()
-    rescue
-      set_Stream(tmpStream)#reput the token on first place of the lexer stream
-      tmpStream = tmpStream.clone
-    else
+    if showNext.kind == :letterLit
+      character.letter = parseLet
       return character
     end
-    character = Character.new
-    begin
-      character.digit = parseDig()
-    rescue
-      set_Stream(tmpStream)
-      tmpStream = tmpStream.clone
-    else
+
+    if showNext.kind == :integer
+      character.digit = parseDig
       return character
     end
-    character = Character.new
-    begin
-      character.symbol = parseSym()
-    rescue
-      set_Stream(tmpStream)
-      tmpStream = tmpStream.clone
-    else
+
+    if ![:letterLit,:integer,:under].include?(showNext.kind)
+      character.symbol = parseSym
       return character
     end 
-    character = Character.new
     character.under = (expect :under).value
     return character
   end  
 
-  def parseChar
+  def parseLet
     
     letter = Letter.new
     letter.letter = (expect :letterLit).value
