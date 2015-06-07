@@ -131,7 +131,6 @@ class Parser
   def parseRhs rhsKind=true
     puts "Parsing Rhs"
     rhs = Rhs.new
-    tmpRhs = rhs.clone
     tmpStream = @lexer.stream.clone
 
     # Identifier
