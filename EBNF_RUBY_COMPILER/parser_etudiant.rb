@@ -151,6 +151,7 @@ class Parser
     # Terminal
     rhs = Rhs.new
     if [:terminalstr1,:terminalstr2].include?(showNext.kind)
+      
       rhs.terminal = parseTerminal()
       if [:altern,:concat].include?(showNext.kind) && rhsKind 
         set_Stream(tmpStream)
@@ -236,6 +237,7 @@ class Parser
     elsif showNext.kind == :terminalstr2
         expect :terminalstr2
         terminal.character << parseCharacter()
+        puts "#{showNext.value}"
         while showNext.kind != :terminalstr2
           puts "#{showNext.value}"
           terminal.character << parseCharacter()
@@ -274,6 +276,7 @@ class Parser
       alphaNum.letter = parseChar()
     rescue
       set_Stream(tmpStream)
+      tmpStream = tmpStream.clone
     else
       return alphaNum
     end
@@ -282,6 +285,7 @@ class Parser
       alphaNum.digit = parseDig()
     rescue
       set_Stream(tmpStream)
+      tmpStream = tmpStream.clone
     else
       return alphaNum
     end
@@ -297,6 +301,7 @@ class Parser
       character.letter = parseChar()
     rescue
       set_Stream(tmpStream)#reput the token on first place of the lexer stream
+      tmpStream = tmpStream.clone
     else
       return character
     end
@@ -305,6 +310,7 @@ class Parser
       character.digit = parseDig()
     rescue
       set_Stream(tmpStream)
+      tmpStream = tmpStream.clone
     else
       return character
     end
@@ -313,38 +319,38 @@ class Parser
       character.symbol = parseSym()
     rescue
       set_Stream(tmpStream)
+      tmpStream = tmpStream.clone
     else
       return character
     end 
     character = Character.new
+    puts "xxxxxxxxxxxxxxxxxx"
     character.under = (expect :under).value
     return character
   end  
 
   def parseChar
-    if !@dic.isLetter(showNext())
-        raise "parsing error expecting letter. Got #{showNext.kind} at #{showNext.pos} (#{showNext.value})"
-    end
+    
     letter = Letter.new
-    letter.letter = acceptIt.value
+    letter.letter = (expect :letterLit).value
     return letter
   end
 
   def parseDig
-    if !@dic.isDigit(showNext())
-        raise "parsing error expecting digit. Got #{showNext.kind} at #{showNext.pos} (#{showNext.value})"
-    end
     digit = Digit.new
-    digit.digit = acceptIt.value
+    digit.digit = (expect :integer).value
     return digit
   end
 
   def parseSym
-    if !@dic.isSymbol(showNext())
-        raise "parsing error expecting symbol. Got #{showNext.kind} at #{showNext.pos} (#{showNext.value})"
-    end
+    
     symbol = Symbol_.new
-    symbol.symbol = acceptIt.value
+    if ![:letterLit,:integer,:under].include?(showNext.kind)
+        puts "#{showNext.value}"
+    	symbol.symbol = acceptIt.value
+    else
+      raise "parsing error expecting symbol got #{showNext.kind} at #{showNext.pos}"
+    end
     return symbol
   end
   #=============parse Dictionnary =================
