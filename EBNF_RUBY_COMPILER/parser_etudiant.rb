@@ -137,9 +137,7 @@ class Parser
     # Identifier
     if showNext.kind==:letterLit
       rhs.ident=parseIdentifier()
-
       if [:altern,:concat].include?(showNext.kind) && rhsKind 
-        raise "continuing error"
         set_Stream(tmpStream)
         tmpStream = tmpStream.clone
       else
