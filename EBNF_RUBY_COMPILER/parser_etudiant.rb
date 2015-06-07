@@ -98,6 +98,7 @@ class Parser
   end
 
   def parseRule
+    puts "Parse Rule"
     rule = Rule.new
     rule.lhs = parseLhs()
     expect :def
@@ -115,7 +116,7 @@ class Parser
   end
 
   def parseRhs rhsKind=true
-    puts "Parsing Rhs"
+    #puts "Parsing Rhs"
     rhs = Rhs.new
     tmpStream = @lexer.stream.clone
 
@@ -207,7 +208,7 @@ class Parser
   end
 
   def parseTerminal
-    puts "Parsing Terminal"
+    #puts "Parsing Terminal"
     terminal=Terminal.new
     if showNext.kind == :terminalstr1
       expect :terminalstr1
@@ -231,7 +232,7 @@ class Parser
   end 
 
   def parseIdentifier
-    puts "Parsing ident"
+    #puts "Parsing ident"
     ident = Identifier.new
     ident.letter = parseLet
     continue = true
