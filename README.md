@@ -36,6 +36,7 @@ This code is a little project made for a compilator course
 
   - If you write a rule which call itself, there should be alternative statement and you should write each 
     statement in groupement
+
       example :
 
 		Expression = (Identifier) |( Expression , "," , Expression);
@@ -61,6 +62,7 @@ This code is a little project made for a compilator course
 
 Normally the lexer will recognize any symbol (meaning there will be no reporting of error with the lexer), with you want
 to change it delete in TOKEN_DEF in parser_etudiant.rb the "autre" regexp ( **/./**) and write the symbol needed as a regexp:
+
     example:
 
 		:pound	=> /\£/,

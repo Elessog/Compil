@@ -1,6 +1,5 @@
 require 'pp'
 require_relative 'lexer'
-require_relative 'dictionnaire'
 require_relative 'ast'
 
 
@@ -19,7 +18,7 @@ TOKEN_DEF={
   :rgrouping    => /\)/,
   :terminalstr2 => /\"/,
   :terminalstr1 => /\'/,
-  :lcomment     => /\(\*/,
+  :lcomment     => /\(\*/,#not currently in use
   :rcomment     => /\*\)/,
   :specialseq   => /\?/,
   :exception    => /\-/,
@@ -41,12 +40,10 @@ TOKEN_DEF={
 
 class Parser
 
-  attr_accessor :lexer 
-  attr_accessor :dic
+  attr_accessor :lexer
 
   def initialize
     @lexer=Lexer.new(TOKEN_DEF)
-    @dic = Dictionnaire.new()
   end
 
   def parse filename
@@ -70,10 +67,6 @@ class Parser
 
   def acceptIt
     @lexer.get_next
-  end
-
-  def get_Stream
-    @lexer.get_Stream
   end
   
   def set_Stream newStream

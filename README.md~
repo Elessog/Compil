@@ -61,7 +61,9 @@ This code is a little project made for a compilator course
 
 Normally the lexer will recognize any symbol (meaning there will be no reporting of error with the lexer), with you want
 to change it delete in TOKEN_DEF in parser_etudiant.rb the "autre" regexp ( **/./**) and write the symbol needed as a regexp:
-    example
+
+    example:
+
 		:pound	=> /\£/,
 
 

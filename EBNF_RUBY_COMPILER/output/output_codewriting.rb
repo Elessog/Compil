@@ -11,13 +11,12 @@ TOKEN_DEF={
   :token_5	=> /\,/,
   :token_6	=> /\[/,
   :token_7	=> /\]/,
-  :token_8	=> /\£\£\£/,
-  :token_9	=> /\{/,
-  :token_10	=> /\}/,
-  :token_11	=> /\(/,
-  :token_12	=> /\)/,
-  :token_13	=> /\=/,
-  :token_14	=> /\;/,
+  :token_8	=> /\{/,
+  :token_9	=> /\}/,
+  :token_10	=> /\(/,
+  :token_11	=> /\)/,
+  :token_12	=> /\=/,
+  :token_13	=> /\;/,
   
 
 # !!!! auto writting of the next kind of token, to be deleted or put in missing rule(s)
@@ -255,22 +254,20 @@ class Parser
       rhs.agrhs_1 = parserhs
 
       expect :token_7
+      if ( showNext.kind == :token_4|| showNext.kind == :token_5) && checkNeeded
+        set_Stream(tmpStream2)
+      else
+        return rhs 
+      end
+    end
+    rhs = RHS.new
+    tmpStream2=@lexer.stream.clone
+    if showNext.kind == :token_8
 
       expect :token_8
-      if ( showNext.kind == :token_4|| showNext.kind == :token_5) && checkNeeded
-        set_Stream(tmpStream2)
-      else
-        return rhs 
-      end
-    end
-    rhs = RHS.new
-    tmpStream2=@lexer.stream.clone
-    if showNext.kind == :token_9
-
-      expect :token_9
       rhs.agrhs_2 = parserhs
 
-      expect :token_10
+      expect :token_9
       if ( showNext.kind == :token_4|| showNext.kind == :token_5) && checkNeeded
         set_Stream(tmpStream2)
       else
@@ -279,12 +276,12 @@ class Parser
     end
     rhs = RHS.new
     tmpStream2=@lexer.stream.clone
-    if showNext.kind == :token_11
+    if showNext.kind == :token_10
 
-      expect :token_11
+      expect :token_10
       rhs.agrhs_3 = parserhs
 
-      expect :token_12
+      expect :token_11
       if ( showNext.kind == :token_4|| showNext.kind == :token_5) && checkNeeded
         set_Stream(tmpStream2)
       else
@@ -320,10 +317,10 @@ class Parser
     rule = RULE.new
     rule.lhs_1 = parselhs
 
-    expect :token_13
+    expect :token_12
     rule.rhs_1 = parserhs
 
-    expect :token_14
+    expect :token_13
     rule
 
   end

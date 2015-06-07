@@ -11,7 +11,7 @@ terminal =  (  "'" ,  character ,  { character } , "'" )
 lhs = identifier ;
 rhs =  ( identifier )
         |  ( terminal )
-        |  (  "[" ,  rhs ,  "]" , "£££" )
+        |  (  "[" ,  rhs , "]" )
         |  (  "{" ,  rhs , "}" )
         |  (  "(" ,  rhs , ")" )
         |  (  rhs ,  "|" , rhs )
