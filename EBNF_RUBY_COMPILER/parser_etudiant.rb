@@ -135,17 +135,16 @@ class Parser
     tmpStream = @lexer.stream.clone
 
     # Identifier
-    begin
+    if showNext.kind==:letterLit
       rhs.ident=parseIdentifier()
 
       if [:altern,:concat].include?(showNext.kind) && rhsKind 
         raise "continuing error"
+        set_Stream(tmpStream)
+        tmpStream = tmpStream.clone
+      else
+        return rhs
       end
-    rescue
-      set_Stream(tmpStream)
-      tmpStream = tmpStream.clone
-    else
-      return rhs
     end
 
     # Terminal
