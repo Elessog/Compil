@@ -96,56 +96,58 @@ class Rhs  < Ast #this classe get more method for a better writing of the parser
     return false 
   end
 
-  def returnTerminal nameRule #return a terminal if it exist
+  def returnTerminal nameRule,n=0 #return a terminal if it exist
     nextObj,name = self.returnObjNam
     if name == "ident"
       nameRule1 = nameRule.clone
+      nameRule1.name=nameRule1.name.clone
       if nameRule1.name.include?(nextObj.to_s) || nameRule1.ast.getRule(nextObj.to_s)== nil #loop and unwrited rule detector
         return nil
       else 
         nameRule1.name << nextObj.to_s 
-        return nameRule1.ast.getRule(nextObj.to_s).rhs.returnTerminal(nameRule1)
+        return nameRule1.ast.getRule(nextObj.to_s).rhs.returnTerminal(nameRule1,1)
       end
     elsif name =="terminal"
       return nextObj
     elsif !nextObj.kind_of?(Array)
-      return nil if name=="optRhs" 
-      return nextObj.returnTerminal(nameRule)
+      return nil if name=="optRhs" && n!=0 
+      return nextObj.returnTerminal(nameRule,1)
     else
-      return nextObj[0].returnTerminal(nameRule)
+      return nextObj[0].returnTerminal(nameRule,1)
     end
   end
 
-  def  isOnlyTerminal dico,nameRule #return true if first rule of altern statements is terminal and return the list of terminal
+  def  isOnlyTerminal dico,nameRule,n=0 #return true if first rule of altern statements is terminal and return the list of terminal
     nextObj,name = self.returnObjNam
 
-    return false,dico if name=="optRhs"# optionnal staement is excluded as it could be buggy after
+    return false,dico if (name=="optRhs" || name=="repRhs" )&& n!=0# optionnal staement is excluded as it could be buggy after but only after first call
     
     if name == "altRhs"
-      term = nil
-      return false,dico if (term = nextObj[0].returnTerminal(nameRule)) == nil
-      return false,dico if dico.include?(term.to_s)
-      dico << term.to_s
-      return nextObj[1].isOnlyTerminal(dico,nameRule)
+      bool,dico = nextObj[0].isOnlyTerminal(dico,nameRule,1)
+      bool2,dico = nextObj[1].isOnlyTerminal(dico,nameRule,1)#recursive
+      return bool & bool2 ,dico
     else
       term = nil
       if !nextObj.kind_of?(Array)
-        return false,dico if nextObj.kind_of?(Identifier)
+        if nextObj.kind_of?(Identifier)
+################
+          nameRule1 = nameRule.clone
+          nameRule1.name=nameRule1.name.clone
+          if nameRule1.name.include?(nextObj.to_s) || nameRule1.ast.getRule(nextObj.to_s)== nil #loop and unwrited rule detector
+            return false,dico
+          else 
+            nameRule1.name << nextObj.to_s 
+            return nameRule1.ast.getRule(nextObj.to_s).rhs.isOnlyTerminal(dico,nameRule1,1)#go in the rule called by identifier
+          end
+        end
+#############
         if nextObj.kind_of?(Terminal)
-          return true,(dico << nextObj.to_s) if !dico.include?(nextObj.to_s)
+          return true, dico << nextObj.to_s if !dico.include?(nextObj.to_s)
           return false,dico
         end
-        term = nextObj.returnTerminal(nameRule)
-        return false,dico if term == nil
-        return false,dico if dico.include?(term.to_s)
-        dico << term.to_s
-        return true,dico
+        return nextObj.isOnlyTerminal(dico,nameRule,1)
       else
-        term = nextObj[0].returnTerminal(nameRule)
-        return false,dico if (term) == nil
-        return false,dico if dico.include?(term.to_s)
-        dico << term.to_s
-        return true,dico
+        return nextObj[0].isOnlyTerminal(dico,nameRule,1)
       end
     end
   end

@@ -81,17 +81,6 @@ The output files will be on the folder 'output':
                 - output_rewrite.txt : the ebnf rewritten
 
 
-**!!!!!!!!!!!!!!!!!!!!! Warning !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!**
-
-error of optimisation with optionnaland repetitive rule in ecritOptRhs and ecritRepRhs change condition in if statement to allow 
-last code writing option (with the begin and rescue)
-
-erreur d'optimisation sur les options et repetitions
-dans le fonctions ecritOptRhs et ecritRepRhs sur les if où l'ont ecrit mettre les conditions des deux premiers statement a if
-pour forcer l'ecriture du begin rescue
-
-
-
 3°) Efficiency of the compiler
 ==============================
 

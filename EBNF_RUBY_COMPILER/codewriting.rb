@@ -128,7 +128,7 @@ class CodeWriting
       rhs3,name3 =rhs.returnObjNam
       lisTerm=[]
       boolAlt =false
-      while name3=="altRhs"
+      while name3=="altRhs"#visit of altRhs
         boolAlt=true
         rshTmp,nameTmp = rhs3[0].groupRhs.returnObjNam
         if nameTmp=="concRhs"
@@ -153,7 +153,7 @@ class CodeWriting
           rhs3,name3 =rhs3[1].returnObjNam
         end
       end
-
+  
       if boolAlt #last altRhs, the right part 
         rshTmp,nameTmp = rhs3.returnObjNam
         
@@ -258,7 +258,7 @@ class CodeWriting
 
   def ecritRhsoptRhs rhs,args=nil
     #TODO
-    if args!=nil
+    if args.kind_of?(Array)
       rhs2 = args[1]
       args = args[0]
     else
@@ -276,10 +276,12 @@ class CodeWriting
 
     bool=false
     term = nil
-    if !rhs.isThereAlt 
+    if !rhs.isThereAlt #to be improve 
       term = rhs.returnTerminal(args)
+      bool2,dico = rhs.isOnlyTerminal([],args)
       bool = true if (term!=term2)
     end
+    
     #==== AST ====
     args= args.clone
     args.placement=args.placement.clone
@@ -334,12 +336,20 @@ class CodeWriting
     term = nil
     if !rhs.isThereAlt
       term = rhs.returnTerminal(args)
-      bool = true if ( term!=term2)
+      bool2, dico = rhs.isOnlyTerminal([],args)
+      if args.name.first == "MethodDeclaration"
+       pp term
+       pp bool2
+       puts "##################"
+      end
+      term = nil if !bool2
+      bool = true if ( term!=term2) 
     end
-    if false # args.name.include?("MethodDeclaration")
+    if false#args.name.first == "MethodDeclaration"
       pp term
       pp term2
       pp bool
+      pp rhs
     end
     #==== AST ====
     args=args.clone
@@ -435,7 +445,6 @@ class CodeWriting
   end
 
   def ecritRhsaltRhs rhs,args=nil
-    #TODO ajout checkNeeded=false a l'envoi dans ident
     bool = false
 
     #check if there is already a dico of first terminal in the args
@@ -502,16 +511,16 @@ class CodeWriting
   end
   
   def writeCondAlt listTerm
-    @condition =" ("
+    @condition =" ["
     
     listTerm.each{|term| tmpFonc(term)}
-    @condition = @condition.chop.chop
+    @condition = @condition.chop
     
-    @condition << ") && checkNeeded\n"
+    @condition << "].include?(showNext.kind) && checkNeeded\n"
   end
 
   def tmpFonc term
-    @condition << " showNext.kind \=\= \:token_#{@dico.getTerminalNumber(term.to_s)}\|\|"
+    @condition << "\:token_#{@dico.getTerminalNumber(term.to_s)}\,"
   end
   
   def ecritRhsconcRhs rhs,args=nil
@@ -520,7 +529,7 @@ class CodeWriting
     newargs=args
     if args.bool && args.advance==false #are we on the top altern ?
       newargs=args.clone 
-      newargs.advance=true #work with clone because true isn't an object ?
+      newargs.advance=true #work with clone because true isn't an object class ?
     end
     #===================  
     
