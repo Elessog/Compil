@@ -237,9 +237,7 @@ class Parser
     elsif showNext.kind == :terminalstr2
         expect :terminalstr2
         terminal.character << parseCharacter()
-        puts "#{showNext.value}"
         while showNext.kind != :terminalstr2
-          puts "#{showNext.value}"
           terminal.character << parseCharacter()
         end
         expect :terminalstr2
@@ -324,7 +322,6 @@ class Parser
       return character
     end 
     character = Character.new
-    puts "xxxxxxxxxxxxxxxxxx"
     character.under = (expect :under).value
     return character
   end  
@@ -346,7 +343,6 @@ class Parser
     
     symbol = Symbol_.new
     if ![:letterLit,:integer,:under].include?(showNext.kind)
-        puts "#{showNext.value}"
     	symbol.symbol = acceptIt.value
     else
       raise "parsing error expecting symbol got #{showNext.kind} at #{showNext.pos}"
