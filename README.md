@@ -92,4 +92,14 @@ pour forcer l'ecriture du begin rescue
 
 
 
+3°) Efficiency of the compiler
+==============================
+
+For analyse purposes it have been added in file a counter to record the position of the token in the stream.
+The file **data_stream.data** is write by the first parser and by the output parser (in their respective folder). 
+Then you can use the MATLAB script to easily plot the data 
+
+
+
+
 

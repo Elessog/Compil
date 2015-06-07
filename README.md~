@@ -36,6 +36,7 @@ This code is a little project made for a compilator course
 
   - If you write a rule which call itself, there should be alternative statement and you should write each 
     statement in groupement
+
       example :
 
 		Expression = (Identifier) |( Expression , "," , Expression);
@@ -88,6 +89,16 @@ last code writing option (with the begin and rescue)
 erreur d'optimisation sur les options et repetitions
 dans le fonctions ecritOptRhs et ecritRepRhs sur les if où l'ont ecrit mettre les conditions des deux premiers statement a if
 pour forcer l'ecriture du begin rescue
+
+
+
+3°) Efficiency of the compiler
+==============================
+
+For analyse purposes it have been added in file a counter to record the position of the token in the stream.
+The file **data_stream.data** is write by the first parser and by the output parser (in their respective folder). Then you can use the MATLAB script
+to easily plot the data 
+
 
 
 
