@@ -44,15 +44,21 @@ class Parser
 
   def initialize
     @lexer=Lexer.new(TOKEN_DEF)
+    @dataFic = File.open("data_stream.data","w")
+    @data=@dataFic
   end
 
   def parse filename
     str=IO.read(filename)
     @lexer.tokenize(str)
-    parseModule()
+    @length = @lexer.stream.length
+    output = parseModule()
+    @dataFic.close
+    output
   end
 
   def expect token_kind
+    @data.write "#{@length - @lexer.stream.length}\n" #data recuperation on parser efficiency
     next_tok=@lexer.get_next
     if next_tok.kind!=token_kind
       # no puts as it would flood the console
@@ -66,6 +72,7 @@ class Parser
   end
 
   def acceptIt
+    @data.write "#{@length - @lexer.stream.length}\n" #data recuperation on parser efficiency
     @lexer.get_next
   end
   
