@@ -59,7 +59,10 @@ This code is a little project made for a compilator course
 
 **Complete the EBNF file**
 
-Make sure the symbol you use are in the symbolDef line and in the hach TOKEN_DEF in the file parser_etudiant.rb especially if it use more than one character like **&&** or **<=**.
+Normally the lexer will recognize any symbol (meaning there will be no reporting of error with the lexer), with you want
+to change it delete in TOKEN_DEF in parser_etudiant.rb the "autre" regexp ( **/./**) and write the symbol needed as a regexp:
+    example
+		:pound	=> /\£/,
 
 
 2°) Run the compiler
