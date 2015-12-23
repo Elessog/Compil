@@ -1,7 +1,7 @@
-READ ME  COMPILATEUR EBNF
+READ ME  COMPILER EBNF
 =========================
 
-This code is a little project made for a compilator course
+This code is a little project made for a compilation course
 
 
 1°) Write an EBNF file
